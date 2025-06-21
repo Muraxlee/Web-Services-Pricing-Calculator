@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Services Pricing Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+        }
+        
+        .service-card {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .service-card.selected {
+            border-color: #4f46e5;
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+        
+        .addon-item {
+            transition: all 0.2s ease;
+        }
+        
+        .addon-item:hover {
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+        
+        .price-tag {
+            transition: all 0.3s ease;
+        }
+        
+        .summary-appear {
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-5xl">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-indigo-800 mb-2">Web Services Pricing Calculator</h1>
+            <p class="text-gray-600 max-w-2xl mx-auto">Get an instant estimate for your web project. Select the services you need and see your customized quote.</p>
+        </header>
+        
+        <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8">
+            <!-- Step 1: Choose Primary Services -->
+            <div class="mb-10">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
+                    <span class="bg-indigo-600 text-white rounded-full w-8 h-8 inline-flex items-center justify-center mr-3">1</span>
+                    Choose Primary Services
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Static Website Card -->
+                    <div id="static-website" class="service-card bg-white rounded-xl shadow-md overflow-hidden cursor-pointer">
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-4">
+                                <h3 class="text-xl font-semibold text-gray-800">Static Website</h3>
+                                <span class="bg-indigo-100 text-indigo-800 text-sm font-medium px-3 py-1 rounded-full">Basic</span>
+                            </div>
+                            <p class="text-gray-600 text-sm mb-4">5-page fast & secure site, no backend. Ideal for portfolios, basic landing pages.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-2xl font-bold text-indigo-600">₹14,999</span>
+                                <span class="text-sm text-gray-500">2-3 weeks</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Dynamic Website Card -->
+                    <div id="dynamic-website" class="service-card bg-white rounded-xl shadow-md overflow-hidden cursor-pointer">
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-4">
+                                <h3 class="text-xl font-semibold text-gray-800">Dynamic Website</h3>
+                                <span class="bg-purple-100 text-purple-800 text-sm font-medium px-3 py-1 rounded-full">Advanced</span>
+                            </div>
+                            <p class="text-gray-600 text-sm mb-4">Includes admin panel, blog, or database. CMS, login, forms, dashboards.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-2xl font-bold text-indigo-600">₹34,999</span>
+                                <span class="text-sm text-gray-500">2-4 weeks</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- E-commerce Website Card -->
+                    <div id="ecommerce-website" class="service-card bg-white rounded-xl shadow-md overflow-hidden cursor-pointer">
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-4">
+                                <h3 class="text-xl font-semibold text-gray-800">E-commerce Website</h3>
+                                <span class="bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full">Premium</span>
+                            </div>
+                            <p class="text-gray-600 text-sm mb-4">Full store with cart, checkout, & products. Secure payment + mobile responsive.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-2xl font-bold text-indigo-600">₹24,999</span>
+                                <span class="text-sm text-gray-500">2-3 weeks</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Web Application Development Card -->
+                    <div id="web-app" class="service-card bg-white rounded-xl shadow-md overflow-hidden cursor-pointer">
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-4">
+                                <h3 class="text-xl font-semibold text-gray-800">Web Application</h3>
+                                <span class="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">Advanced</span>
+                            </div>
+                            <p class="text-gray-600 text-sm mb-4">Business logic, APIs, dashboards, custom functionality and user management.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-2xl font-bold text-indigo-600">₹49,999+</span>
+                                <span class="text-sm text-gray-500">4-6 weeks</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-500 mt-3 italic">Note: Click to select or deselect services. You can select multiple services.</p>
+            </div>
+            
+            <!-- Step 2: Social Media Services (New Dedicated Section) -->
+            <div class="mb-10">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
+                    <span class="bg-pink-600 text-white rounded-full w-8 h-8 inline-flex items-center justify-center mr-3">2</span>
+                    Social Media Services
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Social Media Handling Card -->
+                    <div id="social-media" class="service-card bg-white rounded-xl shadow-md overflow-hidden cursor-pointer">
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-4">
+                                <h3 class="text-xl font-semibold text-gray-800">Social Media Handling</h3>
+                                <span class="bg-pink-100 text-pink-800 text-sm font-medium px-3 py-1 rounded-full">Monthly</span>
+                            </div>
+                            <p class="text-gray-600 text-sm mb-4">12–16 posts/month, captions, strategy, engagement & analytics reporting.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-2xl font-bold text-indigo-600">₹19,999/mo</span>
+                                <span class="text-sm text-gray-500">Recurring</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Social Media Advertising Card -->
+                    <div id="social-ads" class="service-card bg-white rounded-xl shadow-md overflow-hidden cursor-pointer">
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-4">
+                                <h3 class="text-xl font-semibold text-gray-800">Social Media Ads</h3>
+                                <span class="bg-pink-100 text-pink-800 text-sm font-medium px-3 py-1 rounded-full">Monthly</span>
+                            </div>
+                            <p class="text-gray-600 text-sm mb-4">Campaign setup, targeting, creative design, monitoring & optimization.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-2xl font-bold text-indigo-600">₹14,999/mo</span>
+                                <span class="text-sm text-gray-500">Recurring</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-500 mt-3 italic">Note: Social media services are billed monthly on a recurring basis.</p>
+            </div>
+            
+            <!-- Step 3: Additional Services (Now Step 3) -->
+            <div class="mb-10">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
+                    <span class="bg-indigo-600 text-white rounded-full w-8 h-8 inline-flex items-center justify-center mr-3">3</span>
+                    Additional Services
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="addon-item p-4 rounded-lg border border-gray-200 flex justify-between items-center">
+                        <div>
+                            <h3 class="font-medium text-gray-800">AI Agent / Chatbot</h3>
+                            <p class="text-sm text-gray-600">Basic custom AI chatbot</p>
+                            <p class="text-xs text-indigo-600">+1 week</p>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-indigo-600 font-semibold mr-4">₹39,999</span>
+                            <input type="checkbox" id="ai-agent" class="addon-checkbox w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500">
+                        </div>
+                    </div>
+                    
+                    <div class="addon-item p-4 rounded-lg border border-gray-200 flex justify-between items-center">
+                        <div>
+                            <h3 class="font-medium text-gray-800">3D CG Video (30 sec)</h3>
+                            <p class="text-sm text-gray-600">Logo reveal or promo animation</p>
+                            <p class="text-xs text-indigo-600">+2 weeks</p>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-indigo-600 font-semibold mr-4">₹39,999</span>
+                            <input type="checkbox" id="3d-video" class="addon-checkbox w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500">
+                        </div>
+                    </div>
+                    
+                    <div class="addon-item p-4 rounded-lg border border-gray-200 flex justify-between items-center">
+                        <div>
+                            <h3 class="font-medium text-gray-800">Advertisement Videos</h3>
+                            <p class="text-sm text-gray-600">Script + shoot/edit (1 min)</p>
+                            <p class="text-xs text-indigo-600">+1-2 weeks</p>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-indigo-600 font-semibold mr-4">₹34,999</span>
+                            <input type="checkbox" id="ad-videos" class="addon-checkbox w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500">
+                        </div>
+                    </div>
+                    
+                    <div class="addon-item p-4 rounded-lg border border-gray-200 flex justify-between items-center">
+                        <div>
+                            <h3 class="font-medium text-gray-800">VFX & Motion Graphics</h3>
+                            <p class="text-sm text-gray-600">Intros, transitions, animations</p>
+                            <p class="text-xs text-indigo-600">+1 week</p>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-indigo-600 font-semibold mr-4">₹29,999</span>
+                            <input type="checkbox" id="vfx" class="addon-checkbox w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500">
+                        </div>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-500 mt-3 italic">Note: Adding additional services will increase the project timeline as indicated.</p>
+            </div>
+            
+            <!-- Step 4: Project Details (Now Step 4) -->
+            <div class="mb-10">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
+                    <span class="bg-indigo-600 text-white rounded-full w-8 h-8 inline-flex items-center justify-center mr-3">4</span>
+                    Project Details
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-gray-700 mb-2">Number of Pages</label>
+                        <div class="flex items-center">
+                            <button id="decrease-pages" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-l">
+                                -
+                            </button>
+                            <input type="number" id="page-count" class="w-20 text-center py-2 border-t border-b border-gray-300" value="5" min="1" max="50">
+                            <button id="increase-pages" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-r">
+                                +
+                            </button>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Included: Static: 5 | Dynamic: 7 | E-commerce: 10</p>
+                        <p class="text-xs text-gray-500">Extra pages: ₹750/page</p>
+                        <p class="text-xs text-indigo-600">+1 day per 2 extra pages</p>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 mb-2">Timeline</label>
+                        <select id="timeline" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="standard" id="standard-timeline">Standard Timeline</option>
+                            <option value="express">Express Delivery +₹9,999</option>
+                        </select>
+                        <p id="timeline-note" class="text-xs text-gray-500 mt-1">Select a website type to see timeline options</p>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 mb-2">Maintenance Plan</label>
+                        <select id="maintenance" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="none">None</option>
+                            <option value="basic">Basic (₹2,999/month) - Security updates, minor edits</option>
+                            <option value="premium">Premium (₹4,999/month) - All of Basic + backups + priority support</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 mb-2">SEO Package</label>
+                        <select id="seo" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="none">None</option>
+                            <option value="basic">Basic SEO (₹4,999) - On-page, meta tags, analytics</option>
+                            <option value="advanced">Advanced SEO (₹9,999) - Keywords, blog posts, backlinks</option>
+                        </select>
+                        <p class="text-xs text-indigo-600 mt-1">+3-5 days for SEO implementation</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Calculate Button -->
+            <div class="text-center mb-8">
+                <button id="calculate-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-8 rounded-lg shadow-md transition duration-300 transform hover:scale-105">
+                    Calculate Total
+                </button>
+            </div>
+            
+            <!-- Price Summary (Initially Hidden) -->
+            <div id="price-summary" class="hidden bg-indigo-50 rounded-xl p-6 border border-indigo-100 summary-appear">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Your Custom Quote</h2>
+                
+                <div class="space-y-3 mb-6">
+                    <div id="primary-services-container" class="space-y-2">
+                        <!-- Primary services will be added here dynamically -->
+                    </div>
+                    
+                    <div id="social-services-container" class="space-y-2">
+                        <!-- Social media services will be added here dynamically -->
+                    </div>
+                    
+                    <div id="pages-price-item" class="flex justify-between items-center">
+                        <span class="text-gray-700">Additional Pages</span>
+                        <span id="pages-price" class="font-semibold text-gray-800">₹0</span>
+                    </div>
+                    
+                    <div id="timeline-price-item" class="flex justify-between items-center">
+                        <span class="text-gray-700">Timeline Adjustment</span>
+                        <span id="timeline-price" class="font-semibold text-gray-800">₹0</span>
+                    </div>
+                    
+                    <div id="addons-container" class="space-y-2">
+                        <!-- Addon items will be added here dynamically -->
+                    </div>
+                    
+                    <div id="seo-price-item" class="flex justify-between items-center">
+                        <span class="text-gray-700">SEO Package</span>
+                        <span id="seo-price" class="font-semibold text-gray-800">₹0</span>
+                    </div>
+                    
+                    <div class="border-t border-gray-300 pt-3 mt-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-lg font-semibold text-gray-800">One-Time Cost</span>
+                            <span id="total-price" class="text-2xl font-bold text-indigo-600">₹0</span>
+                        </div>
+                        
+                        <div id="recurring-costs" class="mt-3 space-y-2">
+                            <div id="maintenance-price-item" class="flex justify-between items-center">
+                                <span class="text-gray-700">Monthly Maintenance</span>
+                                <span id="maintenance-price" class="font-semibold text-gray-800">₹0/month</span>
+                            </div>
+                            
+                            <div id="social-media-recurring-container" class="space-y-2">
+                                <!-- Social media recurring items will be added here dynamically -->
+                            </div>
+                            
+                            <div id="recurring-total-item" class="flex justify-between items-center pt-2 border-t border-gray-200">
+                                <span class="text-gray-700 font-semibold">Total Monthly Recurring</span>
+                                <span id="recurring-total" class="font-semibold text-indigo-600">₹0/month</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="estimated-timeline" class="bg-white p-3 rounded-lg mt-4 border border-indigo-100">
+                        <div class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            <span class="font-medium text-gray-800">Estimated Timeline:</span>
+                            <span id="timeline-estimate" class="ml-2 text-indigo-700 font-medium">2-3 weeks</span>
+                        </div>
+                        <div id="timeline-breakdown" class="mt-2 text-sm text-gray-600">
+                            <!-- Timeline breakdown will be added here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex flex-col md:flex-row gap-4 justify-center">
+                    <button id="save-quote-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-lg shadow-md transition duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+                        </svg>
+                        Save Quote
+                    </button>
+                    
+                    <button id="share-quote-btn" class="bg-white hover:bg-gray-100 text-indigo-600 font-medium py-2 px-6 rounded-lg shadow-md border border-indigo-200 transition duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                        </svg>
+                        Share Quote
+                    </button>
+                    
+                    <button id="contact-btn" class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-6 rounded-lg shadow-md transition duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                        </svg>
+                        Contact Us
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Share Quote Modal (Hidden by default) -->
+        <div id="share-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+            <div class="bg-white rounded-xl p-6 max-w-md w-full">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-bold text-gray-800">Share Your Quote</h3>
+                    <button id="close-share-modal" class="text-gray-500 hover:text-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2">Recipient Email</label>
+                    <input type="email" id="recipient-email" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="client@example.com">
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block text-gray-700 mb-2">Message (Optional)</label>
+                    <textarea id="share-message" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500" rows="3" placeholder="Here's the quote we discussed..."></textarea>
+                </div>
+                
+                <div class="flex justify-end">
+                    <button id="send-quote-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-lg shadow-md transition duration-300">
+                        Send Quote
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Success Notification (Hidden by default) -->
+        <div id="success-notification" class="fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg hidden">
+            <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                <span id="notification-message">Success!</span>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Variables to store selected options
+            let selectedPrimaryServices = [];
+            let selectedSocialServices = [];
+            let selectedAddons = [];
+            let additionalPagesPrice = 0;
+            let timelinePrice = 0;
+            let seoPrice = 0;
+            let maintenancePrice = 0;
+            
+            // Service details
+            const serviceDetails = {
+                'static-website': {
+                    name: 'Static Website',
+                    price: 14999,
+                    timeline: {
+                        standard: "2-3 weeks",
+                        express: "1-2 weeks"
+                    },
+                    includedPages: 5,
+                    isRecurring: false,
+                    category: 'primary'
+                },
+                'dynamic-website': {
+                    name: 'Dynamic Website',
+                    price: 34999,
+                    timeline: {
+                        standard: "2-4 weeks",
+                        express: "1-2 weeks"
+                    },
+                    includedPages: 7,
+                    isRecurring: false,
+                    category: 'primary'
+                },
+                'ecommerce-website': {
+                    name: 'E-commerce Website',
+                    price: 24999,
+                    timeline: {
+                        standard: "2-3 weeks",
+                        express: "1-2 weeks"
+                    },
+                    includedPages: 10,
+                    isRecurring: false,
+                    category: 'primary'
+                },
+                'web-app': {
+                    name: 'Web Application Development',
+                    price: 49999,
+                    timeline: {
+                        standard: "4-6 weeks",
+                        express: "2-3 weeks"
+                    },
+                    includedPages: 0, // No included pages for web app
+                    isRecurring: false,
+                    category: 'primary'
+                },
+                'social-media': {
+                    name: 'Social Media Handling',
+                    price: 19999,
+                    timeline: {
+                        standard: "Monthly service",
+                        express: "Monthly service"
+                    },
+                    includedPages: 0, // No included pages for social media
+                    isRecurring: true,
+                    category: 'social'
+                },
+                'social-ads': {
+                    name: 'Social Media Ads',
+                    price: 14999,
+                    timeline: {
+                        standard: "Monthly service",
+                        express: "Monthly service"
+                    },
+                    includedPages: 0,
+                    isRecurring: true,
+                    category: 'social'
+                }
+            };
+            
+            // Additional time for services (in weeks)
+            const addonTimeAdditions = {
+                'ai-agent': 1,
+                '3d-video': 2,
+                'ad-videos': 1.5, // 1-2 weeks
+                'vfx': 1
+            };
+            
+            // Primary service selection
+            const serviceCards = document.querySelectorAll('.service-card');
+            const standardTimelineOption = document.getElementById('standard-timeline');
+            const timelineNote = document.getElementById('timeline-note');
+            
+            serviceCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const serviceId = this.id;
+                    const serviceCategory = serviceDetails[serviceId].category;
+                    
+                    // Toggle selection
+                    if (this.classList.contains('selected')) {
+                        // Remove from selected services
+                        this.classList.remove('selected');
+                        
+                        if (serviceCategory === 'primary') {
+                            selectedPrimaryServices = selectedPrimaryServices.filter(id => id !== serviceId);
+                        } else if (serviceCategory === 'social') {
+                            selectedSocialServices = selectedSocialServices.filter(id => id !== serviceId);
+                        }
+                    } else {
+                        // Add to selected services
+                        this.classList.add('selected');
+                        
+                        if (serviceCategory === 'primary') {
+                            selectedPrimaryServices.push(serviceId);
+                        } else if (serviceCategory === 'social') {
+                            selectedSocialServices.push(serviceId);
+                        }
+                    }
+                    
+                    // Update timeline options based on selected services
+                    updateTimelineOptions();
+                });
+            });
+            
+            function updateTimelineOptions() {
+                // Find the service with the longest timeline for standard option
+                let longestStandardTimeline = "Standard Timeline";
+                
+                if (selectedPrimaryServices.length > 0) {
+                    // Get the first website type service (if any)
+                    const websiteServices = selectedPrimaryServices.filter(service => 
+                        ['static-website', 'dynamic-website', 'ecommerce-website', 'web-app'].includes(service));
+                    
+                    if (websiteServices.length > 0) {
+                        const primaryService = websiteServices[0];
+                        longestStandardTimeline = `Standard (${serviceDetails[primaryService].timeline.standard})`;
+                        timelineNote.textContent = `Express: ${serviceDetails[primaryService].timeline.express} (+₹9,999)`;
+                    } else {
+                        timelineNote.textContent = "Select a website type to see timeline options";
+                    }
+                } else {
+                    timelineNote.textContent = "Select a website type to see timeline options";
+                }
+                
+                standardTimelineOption.textContent = longestStandardTimeline;
+            }
+            
+            // Addon selection
+            const addonCheckboxes = document.querySelectorAll('.addon-checkbox');
+            addonCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        selectedAddons.push(this.id);
+                    } else {
+                        selectedAddons = selectedAddons.filter(addon => addon !== this.id);
+                    }
+                });
+            });
+            
+            // Page count controls
+            const pageCountInput = document.getElementById('page-count');
+            const decreaseBtn = document.getElementById('decrease-pages');
+            const increaseBtn = document.getElementById('increase-pages');
+            
+            decreaseBtn.addEventListener('click', function() {
+                if (parseInt(pageCountInput.value) > 1) {
+                    pageCountInput.value = parseInt(pageCountInput.value) - 1;
+                }
+            });
+            
+            increaseBtn.addEventListener('click', function() {
+                if (parseInt(pageCountInput.value) < 50) {
+                    pageCountInput.value = parseInt(pageCountInput.value) + 1;
+                }
+            });
+            
+            // Calculate button
+            const calculateBtn = document.getElementById('calculate-btn');
+            const priceSummary = document.getElementById('price-summary');
+            
+            calculateBtn.addEventListener('click', function() {
+                if (selectedPrimaryServices.length === 0 && selectedSocialServices.length === 0) {
+                    alert('Please select at least one service.');
+                    return;
+                }
+                
+                // Calculate primary services price
+                const primaryServicesContainer = document.getElementById('primary-services-container');
+                primaryServicesContainer.innerHTML = ''; // Clear previous services
+                
+                const socialServicesContainer = document.getElementById('social-services-container');
+                socialServicesContainer.innerHTML = ''; // Clear previous social services
+                
+                const socialMediaRecurringContainer = document.getElementById('social-media-recurring-container');
+                socialMediaRecurringContainer.innerHTML = ''; // Clear previous social media recurring items
+                
+                let totalOneTimePrice = 0;
+                let totalRecurringPrice = 0;
+                let includedPages = 0;
+                
+                // Process primary services
+                selectedPrimaryServices.forEach(serviceId => {
+                    const service = serviceDetails[serviceId];
+                    
+                    // Add service to summary
+                    const serviceItem = document.createElement('div');
+                    serviceItem.className = 'flex justify-between items-center';
+                    
+                    totalOneTimePrice += service.price;
+                    includedPages += service.includedPages;
+                    
+                    serviceItem.innerHTML = `
+                        <span class="text-gray-700">${service.name}</span>
+                        <span class="font-semibold text-gray-800">₹${service.price.toLocaleString('en-IN')}</span>
+                    `;
+                    
+                    primaryServicesContainer.appendChild(serviceItem);
+                });
+                
+                // Process social media services
+                selectedSocialServices.forEach(serviceId => {
+                    const service = serviceDetails[serviceId];
+                    
+                    // Add service to recurring costs
+                    const serviceItem = document.createElement('div');
+                    serviceItem.className = 'flex justify-between items-center';
+                    serviceItem.innerHTML = `
+                        <span class="text-gray-700">${service.name}</span>
+                        <span class="font-semibold text-gray-800">₹${service.price.toLocaleString('en-IN')}/month</span>
+                    `;
+                    
+                    socialMediaRecurringContainer.appendChild(serviceItem);
+                    
+                    // Add to total recurring price
+                    totalRecurringPrice += service.price;
+                });
+                
+                // Calculate additional pages price and time
+                const pageCount = parseInt(pageCountInput.value);
+                let additionalPagesDays = 0;
+                
+                // Only charge for additional pages if we have a website service selected
+                const hasWebsiteService = selectedPrimaryServices.some(service => 
+                    ['static-website', 'dynamic-website', 'ecommerce-website'].includes(service));
+                
+                if (hasWebsiteService) {
+                    const additionalPages = Math.max(0, pageCount - includedPages);
+                    additionalPagesPrice = additionalPages * 750; // ₹750 per additional page
+                    totalOneTimePrice += additionalPagesPrice;
+                    
+                    // Calculate additional days for extra pages (1 day per 2 pages)
+                    additionalPagesDays = Math.ceil(additionalPages / 2);
+                } else {
+                    additionalPagesPrice = 0;
+                }
+                
+                // Calculate timeline adjustment
+                const timeline = document.getElementById('timeline').value;
+                timelinePrice = 0;
+                
+                if (timeline === 'express') {
+                    timelinePrice = 9999; // Express fee
+                    totalOneTimePrice += timelinePrice;
+                }
+                
+                // Calculate addons price and time
+                let addonsPrices = 0;
+                let additionalAddonWeeks = 0;
+                const addonsContainer = document.getElementById('addons-container');
+                addonsContainer.innerHTML = ''; // Clear previous addons
+                
+                selectedAddons.forEach(addon => {
+                    let addonPrice = 0;
+                    let addonName = '';
+                    let addonTime = 0;
+                    
+                    switch(addon) {
+                        case 'ai-agent':
+                            addonPrice = 39999;
+                            addonName = 'AI Agent / Chatbot';
+                            addonTime = addonTimeAdditions[addon];
+                            break;
+                        case '3d-video':
+                            addonPrice = 39999;
+                            addonName = '3D CG Video (30 sec)';
+                            addonTime = addonTimeAdditions[addon];
+                            break;
+                        case 'ad-videos':
+                            addonPrice = 34999;
+                            addonName = 'Advertisement Videos';
+                            addonTime = addonTimeAdditions[addon];
+                            break;
+                        case 'vfx':
+                            addonPrice = 29999;
+                            addonName = 'VFX & Motion Graphics';
+                            addonTime = addonTimeAdditions[addon];
+                            break;
+                    }
+                    
+                    addonsPrices += addonPrice;
+                    totalOneTimePrice += addonPrice;
+                    additionalAddonWeeks += addonTime;
+                    
+                    // Add addon to summary
+                    const addonItem = document.createElement('div');
+                    addonItem.className = 'flex justify-between items-center';
+                    addonItem.innerHTML = `
+                        <span class="text-gray-700">${addonName}</span>
+                        <span class="font-semibold text-gray-800">₹${addonPrice.toLocaleString('en-IN')}</span>
+                    `;
+                    addonsContainer.appendChild(addonItem);
+                });
+                
+                // Calculate SEO price and time
+                const seoPackage = document.getElementById('seo').value;
+                let seoDays = 0;
+                
+                switch(seoPackage) {
+                    case 'none':
+                        seoPrice = 0;
+                        seoDays = 0;
+                        break;
+                    case 'basic':
+                        seoPrice = 4999;
+                        seoDays = 3;
+                        break;
+                    case 'advanced':
+                        seoPrice = 9999;
+                        seoDays = 5;
+                        break;
+                }
+                
+                totalOneTimePrice += seoPrice;
+                
+                // Calculate maintenance price
+                const maintenancePlan = document.getElementById('maintenance').value;
+                switch(maintenancePlan) {
+                    case 'none':
+                        maintenancePrice = 0;
+                        break;
+                    case 'basic':
+                        maintenancePrice = 2999;
+                        break;
+                    case 'premium':
+                        maintenancePrice = 4999;
+                        break;
+                }
+                
+                totalRecurringPrice += maintenancePrice;
+                
+                // Format prices with Indian number formatting
+                const formatPrice = (price) => {
+                    return '₹' + price.toLocaleString('en-IN');
+                };
+                
+                // Update price summary
+                document.getElementById('pages-price').textContent = formatPrice(additionalPagesPrice);
+                document.getElementById('timeline-price').textContent = formatPrice(timelinePrice);
+                document.getElementById('seo-price').textContent = formatPrice(seoPrice);
+                document.getElementById('total-price').textContent = formatPrice(totalOneTimePrice);
+                
+                // Update maintenance price
+                document.getElementById('maintenance-price').textContent = maintenancePrice > 0 ? 
+                    formatPrice(maintenancePrice) + '/month' : '₹0/month';
+                
+                // Update recurring total
+                const recurringTotalItem = document.getElementById('recurring-total-item');
+                document.getElementById('recurring-total').textContent = totalRecurringPrice > 0 ? 
+                    formatPrice(totalRecurringPrice) + '/month' : '₹0/month';
+                
+                // Show/hide recurring total based on if there are any recurring costs
+                const recurringCosts = document.getElementById('recurring-costs');
+                recurringCosts.style.display = totalRecurringPrice > 0 ? 'block' : 'none';
+                
+                // Update timeline estimate
+                const timelineEstimate = document.getElementById('timeline-estimate');
+                const timelineBreakdown = document.getElementById('timeline-breakdown');
+                
+                // Calculate total timeline
+                let baseTimelineRange = [0, 0];
+                
+                // Find the service with the longest timeline
+                const websiteServices = selectedPrimaryServices.filter(service => 
+                    ['static-website', 'dynamic-website', 'ecommerce-website', 'web-app'].includes(service));
+                
+                if (websiteServices.length > 0) {
+                    // Get the service with the longest timeline
+                    let longestService = websiteServices[0];
+                    let longestTimelineWeeks = 0;
+                    
+                    websiteServices.forEach(service => {
+                        const serviceTimeline = serviceDetails[service].timeline[timeline];
+                        const timelineWeeks = parseInt(serviceTimeline.split('-')[1] || serviceTimeline.split(' ')[0]);
+                        
+                        if (timelineWeeks > longestTimelineWeeks) {
+                            longestTimelineWeeks = timelineWeeks;
+                            longestService = service;
+                        }
+                    });
+                    
+                    if (timeline === 'express') {
+                        const expressRange = serviceDetails[longestService].timeline.express.split('-');
+                        baseTimelineRange = [parseInt(expressRange[0]), parseInt(expressRange[1] || expressRange[0])];
+                    } else {
+                        const standardRange = serviceDetails[longestService].timeline.standard.split('-');
+                        baseTimelineRange = [parseInt(standardRange[0]), parseInt(standardRange[1] || standardRange[0])];
+                    }
+                }
+                
+                // Convert additional days to weeks for display
+                const additionalWeeks = additionalAddonWeeks;
+                const additionalDays = additionalPagesDays + seoDays;
+                
+                // Calculate new timeline range
+                let minWeeks = baseTimelineRange[0] + additionalWeeks;
+                let maxWeeks = baseTimelineRange[1] + additionalWeeks;
+                
+                // Add days to weeks
+                minWeeks += Math.floor(additionalDays / 7);
+                maxWeeks += Math.ceil(additionalDays / 7);
+                
+                // Remaining days
+                const remainingDays = additionalDays % 7;
+                
+                // Format the timeline string
+                let timelineString = '';
+                if (minWeeks === maxWeeks) {
+                    timelineString = `${minWeeks} weeks`;
+                    if (remainingDays > 0) {
+                        timelineString += ` + ${remainingDays} days`;
+                    }
+                } else {
+                    timelineString = `${minWeeks}-${maxWeeks} weeks`;
+                }
+                
+                // If no website service is selected, show appropriate message
+                if (websiteServices.length === 0) {
+                    if (selectedSocialServices.length > 0) {
+                        timelineString = "Monthly recurring service";
+                    } else {
+                        timelineString = "No timeline (no website services selected)";
+                    }
+                }
+                
+                timelineEstimate.textContent = timelineString;
+                
+                // Create timeline breakdown
+                timelineBreakdown.innerHTML = '';
+                
+                // Base timeline for website services
+                if (websiteServices.length > 0) {
+                    websiteServices.forEach(service => {
+                        const baseTimelineItem = document.createElement('div');
+                        baseTimelineItem.className = 'flex justify-between';
+                        baseTimelineItem.innerHTML = `
+                            <span>${serviceDetails[service].name}:</span>
+                            <span>${serviceDetails[service].timeline[timeline]}</span>
+                        `;
+                        timelineBreakdown.appendChild(baseTimelineItem);
+                    });
+                    
+                    // Additional pages
+                    if (additionalPagesPrice > 0) {
+                        const pagesTimelineItem = document.createElement('div');
+                        pagesTimelineItem.className = 'flex justify-between';
+                        pagesTimelineItem.innerHTML = `
+                            <span>Additional pages:</span>
+                            <span>+${additionalPagesDays} days</span>
+                        `;
+                        timelineBreakdown.appendChild(pagesTimelineItem);
+                    }
+                    
+                    // SEO implementation
+                    if (seoDays > 0) {
+                        const seoTimelineItem = document.createElement('div');
+                        seoTimelineItem.className = 'flex justify-between';
+                        seoTimelineItem.innerHTML = `
+                            <span>SEO implementation:</span>
+                            <span>+${seoDays} days</span>
+                        `;
+                        timelineBreakdown.appendChild(seoTimelineItem);
+                    }
+                    
+                    // Additional services
+                    selectedAddons.forEach(addon => {
+                        let addonTime = addonTimeAdditions[addon];
+                        let addonName = '';
+                        
+                        switch(addon) {
+                            case 'ai-agent':
+                                addonName = 'AI Chatbot';
+                                break;
+                            case '3d-video':
+                                addonName = '3D Video';
+                                break;
+                            case 'ad-videos':
+                                addonName = 'Ad Videos';
+                                break;
+                            case 'vfx':
+                                addonName = 'VFX & Motion Graphics';
+                                break;
+                        }
+                        
+                        const addonTimelineItem = document.createElement('div');
+                        addonTimelineItem.className = 'flex justify-between';
+                        addonTimelineItem.innerHTML = `
+                            <span>${addonName}:</span>
+                            <span>+${addonTime} ${addonTime === 1 ? 'week' : 'weeks'}</span>
+                        `;
+                        timelineBreakdown.appendChild(addonTimelineItem);
+                    });
+                } else if (selectedSocialServices.length > 0) {
+                    selectedSocialServices.forEach(service => {
+                        const socialMediaTimelineItem = document.createElement('div');
+                        socialMediaTimelineItem.className = 'flex justify-between';
+                        socialMediaTimelineItem.innerHTML = `
+                            <span>${serviceDetails[service].name}:</span>
+                            <span>Monthly recurring service</span>
+                        `;
+                        timelineBreakdown.appendChild(socialMediaTimelineItem);
+                    });
+                }
+                
+                // Show price summary
+                priceSummary.classList.remove('hidden');
+                
+                // Scroll to price summary
+                priceSummary.scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            // Share quote functionality
+            const shareQuoteBtn = document.getElementById('share-quote-btn');
+            const shareModal = document.getElementById('share-modal');
+            const closeShareModalBtn = document.getElementById('close-share-modal');
+            const sendQuoteBtn = document.getElementById('send-quote-btn');
+            const successNotification = document.getElementById('success-notification');
+            const notificationMessage = document.getElementById('notification-message');
+            
+            shareQuoteBtn.addEventListener('click', function() {
+                shareModal.classList.remove('hidden');
+            });
+            
+            closeShareModalBtn.addEventListener('click', function() {
+                shareModal.classList.add('hidden');
+            });
+            
+            // Close share modal when clicking outside
+            shareModal.addEventListener('click', function(e) {
+                if (e.target === shareModal) {
+                    shareModal.classList.add('hidden');
+                }
+            });
+            
+            sendQuoteBtn.addEventListener('click', function() {
+                const email = document.getElementById('recipient-email').value;
+                
+                if (!email) {
+                    alert('Please enter a recipient email address.');
+                    return;
+                }
+                
+                // In a real application, this would send the quote to the server
+                // For this demo, we'll just show a success message
+                
+                shareModal.classList.add('hidden');
+                notificationMessage.textContent = 'Quote sent successfully!';
+                successNotification.classList.remove('hidden');
+                
+                // Hide notification after 3 seconds
+                setTimeout(function() {
+                    successNotification.classList.add('hidden');
+                }, 3000);
+            });
+            
+            // Save quote functionality
+            const saveQuoteBtn = document.getElementById('save-quote-btn');
+            
+            saveQuoteBtn.addEventListener('click', function() {
+                // In a real application, this would save the quote to the server or generate a PDF
+                // For this demo, we'll just show a success message
+                
+                notificationMessage.textContent = 'Quote saved successfully!';
+                successNotification.classList.remove('hidden');
+                
+                // Hide notification after 3 seconds
+                setTimeout(function() {
+                    successNotification.classList.add('hidden');
+                }, 3000);
+            });
+            
+            // Contact button functionality
+            const contactBtn = document.getElementById('contact-btn');
+            
+            contactBtn.addEventListener('click', function() {
+                // In a real application, this would open a contact form or redirect to a contact page
+                // For this demo, we'll just show a success message
+                
+                notificationMessage.textContent = 'Contact form would open here!';
+                successNotification.classList.remove('hidden');
+                
+                // Hide notification after 3 seconds
+                setTimeout(function() {
+                    successNotification.classList.add('hidden');
+                }, 3000);
+            });
+        });
+    </script>
+</body>
+</html>
